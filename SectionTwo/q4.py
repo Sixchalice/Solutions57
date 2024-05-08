@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr as pearsonr
+from scipy.stats import pearsonr
+
 
 print("Input numbers: (-1 to stop)")
 num: float = float(input())
