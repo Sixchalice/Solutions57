@@ -1,4 +1,4 @@
-def is_sorted_polyndrom(sqc):
+def is_sorted_polyndrom(sqc: str):
     rev_sqc = sqc[::-1]
     mid_index = len(sqc) // 2 + 1
     if sqc != rev_sqc:
