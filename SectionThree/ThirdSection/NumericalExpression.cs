@@ -20,6 +20,14 @@ namespace MyApp
             tens = language.getTens();
             magnitude = language.getMagnitudes();
         }
+        public NumericalExpression(long n, IWords language)
+        {
+            this.number = n;
+            this.language = language;
+            units = language.getUnits();
+            tens = language.getTens();
+            magnitude = language.getMagnitudes();
+        }
         public void ChangeLanguage(IWords language)
         {
             this.language = language;
@@ -97,12 +105,12 @@ namespace MyApp
             }
             return sentence.ToString().Replace(" ", "").Length;
         }
-        public static long SumLetters(long n)
-        {
+        public static long SumLetters(long n, IWords language)
+        {                
             long sumOfLetters = 0;
             for (long i = 1; i <= n; i++)
             {
-                NumericalExpression NumEx = new NumericalExpression(i);
+                NumericalExpression NumEx = new NumericalExpression(i, language);
                 sumOfLetters += NumEx.GetAmountOfLetters();
             }
             return sumOfLetters;
@@ -111,14 +119,12 @@ namespace MyApp
         This is overloading. Overloading is when you have 2 methods with the same name but different parameters.
         Ex: long n for the first method, and for the second a NumericalExpression object.
         */
-
         public static long SumLetters(NumericalExpression NumEx)
         {
             long sumOfLetters = 0;
             for (long i = 1; i <= NumEx.GetValue(); i++)
             {
-                NumericalExpression temp = new NumericalExpression(i);
-                sumOfLetters += temp.GetAmountOfLetters();
+                sumOfLetters += NumEx.GetAmountOfLetters();
             }
             return sumOfLetters;
         }
