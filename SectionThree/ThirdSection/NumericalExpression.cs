@@ -7,23 +7,25 @@ namespace MyApp
         private StringBuilder sentence = new StringBuilder("");
         private long number;
 
-        private string[] units = {"", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ",
-            "Ten ", "Eleven ", "Twelve ", "Thirteen ", "Fourteen ", "Fifteen ", "Sixteen ",
-            "Seventeen ", "Eighteen ", "Nineteen ",
-        };
-
-        private string[] tens = {"", "Ten", "Twenty ", "Thirty ", "Forty ",
-            "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "
-        };
-
-        // To add more than Trillions, you can add more strings to the array.
-        private string[] magnitude = {"", "Hundred ", "Thousand ", "Million ",
-            "Billion ", "Trillion "
-        };
-
+        // This is the default language
+        private IWords language = new EnglishWords();
+        
+        private string[] units;
+        private string[] tens;
+        private string[] magnitude;
         public NumericalExpression(long n)
         {
-            number = n;
+            this.number = n;
+            units = language.getUnits();
+            tens = language.getTens();
+            magnitude = language.getMagnitudes();
+        }
+        public void ChangeLanguage(IWords language)
+        {
+            this.language = language;
+            units = language.getUnits();
+            tens = language.getTens();
+            magnitude = language.getMagnitudes();
         }
 
         public long GetValue()
@@ -38,13 +40,13 @@ namespace MyApp
             while (num > 0)
             {
                 int threeDigits = (int)(num % 1000);
-                StringBuilder ss = GroupOfThree(threeDigits, magnitudeCount);
-                if (magnitudeCount == 0)
-                    magnitudeCount++;
+                StringBuilder currentThree = GroupOfThree(threeDigits, magnitudeCount);
+                // if (magnitudeCount == 0)
+                //     magnitudeCount++;
 
                 magnitudeCount++;
 
-                sentence.Insert(0, ss.ToString());
+                sentence.Insert(0, currentThree.ToString());
                 num = num / 1000;
             }
             return sentence.ToString();
@@ -57,28 +59,33 @@ namespace MyApp
             int ten = n / 10 % 10;
             int hund = n / 100;
 
+            int onesIndex = ones - 1;
+            int tenIndex = ten - 1;
+            int hundIndex = hund - 1;
             if(hund > 0)
             {
-                stringBuilder.Append(units[hund]);
-                stringBuilder.Append(magnitude[1]);
+                stringBuilder.Append(units[hundIndex]);
+                stringBuilder.Append(magnitude[0]);
             }
 
             if (ten == 1)
             {
-                string ten_one = ten.ToString() + ones.ToString();
-                stringBuilder.Append(units[Int32.Parse(ten_one)]);
+                string tenPlusOne = ten.ToString() + ones.ToString();
+                int tenPlusOneIndex = Int32.Parse(tenPlusOne) - 1;
+                stringBuilder.Append(units[tenPlusOneIndex]);
             }
             else if (ten == 0)
             {
-                stringBuilder.Append(units[ones]);
+                stringBuilder.Append(units[onesIndex]);
             }
             else
             {
-                stringBuilder.Append(tens[ten]);
-                stringBuilder.Append(units[ones]);
-
+                stringBuilder.Append(tens[tenIndex]);
+                stringBuilder.Append(units[onesIndex]);
             }
-            stringBuilder.Append(magnitude[magnitudeCount]);
+            if(magnitudeCount > 0){
+                stringBuilder.Append(magnitude[magnitudeCount]);
+            }
             return stringBuilder;
         }
 
@@ -100,8 +107,11 @@ namespace MyApp
             }
             return sumOfLetters;
         }
-        // This is overloading. Overloading is when you have 2 methods with the same name,
-        // but different parameters. Ex: long n for the first method, and for the second an NumericalExpression object.
+        /*
+        This is overloading. Overloading is when you have 2 methods with the same name but different parameters.
+        Ex: long n for the first method, and for the second a NumericalExpression object.
+        */
+
         public static long SumLetters(NumericalExpression NumEx)
         {
             long sumOfLetters = 0;
@@ -112,9 +122,6 @@ namespace MyApp
             }
             return sumOfLetters;
         }
-
-
-
         public override string ToString()
         {
             return GetSentence();
