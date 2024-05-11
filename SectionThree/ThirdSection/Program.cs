@@ -11,10 +11,9 @@ namespace MyApp
             In order to change the language of the NumericalExpression, 
             You can make a new class that implements the interface IWords and call the method ChangeLanguage.
             */
-            NumericalExpression NumEx = new NumericalExpression(3);
+            NumericalExpression NumEx = new NumericalExpression(11231);
+            // NumEx.ChangeLanguage(new SpanishWords());
             Console.WriteLine(NumEx);
-            Console.WriteLine("Sum1: " + NumericalExpression.SumLetters(NumEx));
-            Console.WriteLine("Sum2: "  + NumericalExpression.SumLetters(3, new EnglishWords()));
         }
     }
 }

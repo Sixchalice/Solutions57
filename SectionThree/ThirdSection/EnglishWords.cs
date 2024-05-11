@@ -1,12 +1,12 @@
 namespace MyApp {
     class EnglishWords : IWords {
         
-        private string[] units = {"One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ",
-        "Ten ", "Eleven ", "Twelve ", "Thirteen ", "Fourteen ", "Fifteen ", "Sixteen ",
-        "Seventeen ", "Eighteen ", "Nineteen ",
+        private string[] units = {"", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ",
+            "Ten ", "Eleven ", "Twelve ", "Thirteen ", "Fourteen ", "Fifteen ", "Sixteen ",
+            "Seventeen ", "Eighteen ", "Nineteen ",
         };
 
-        private string[] tens = {"Ten", "Twenty ", "Thirty ", "Forty ",
+        private string[] tens = {"", "Ten", "Twenty ", "Thirty ", "Forty ",
             "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "
         };
 

@@ -49,9 +49,6 @@ namespace MyApp
             {
                 int threeDigits = (int)(num % 1000);
                 StringBuilder currentThree = GroupOfThree(threeDigits, magnitudeCount);
-                // if (magnitudeCount == 0)
-                //     magnitudeCount++;
-
                 magnitudeCount++;
 
                 sentence.Insert(0, currentThree.ToString());
@@ -67,34 +64,60 @@ namespace MyApp
             int ten = n / 10 % 10;
             int hund = n / 100;
 
-            int onesIndex = ones - 1;
-            int tenIndex = ten - 1;
-            int hundIndex = hund - 1;
+
             if(hund > 0)
             {
-                stringBuilder.Append(units[hundIndex]);
+                stringBuilder.Append(units[hund]);
                 stringBuilder.Append(magnitude[0]);
             }
 
             if (ten == 1)
             {
-                string tenPlusOne = ten.ToString() + ones.ToString();
-                int tenPlusOneIndex = Int32.Parse(tenPlusOne) - 1;
-                stringBuilder.Append(units[tenPlusOneIndex]);
+                string ten_one = ten.ToString() + ones.ToString();
+                stringBuilder.Append(units[Int32.Parse(ten_one)]);
             }
             else if (ten == 0)
             {
-                stringBuilder.Append(units[onesIndex]);
+                stringBuilder.Append(units[ones]);
             }
             else
             {
-                stringBuilder.Append(tens[tenIndex]);
-                stringBuilder.Append(units[onesIndex]);
+                stringBuilder.Append(tens[ten]);
+                stringBuilder.Append(units[ones]);
+
             }
-            if(magnitudeCount > 0){
+            if(magnitudeCount > 0)
                 stringBuilder.Append(magnitude[magnitudeCount]);
-            }
             return stringBuilder;
+
+            // int onesIndex = ones - 1;
+            // int tenIndex = ten - 1;
+            // int hundIndex = hund - 1;
+            // if(hund > 0)
+            // {
+            //     stringBuilder.Append(units[hundIndex]);
+            //     stringBuilder.Append(magnitude[0]);
+            // }
+
+            // if (ten == 1)
+            // {
+            //     string tenPlusOne = ten.ToString() + ones.ToString();
+            //     int tenPlusOneIndex = Int32.Parse(tenPlusOne) - 1;
+            //     stringBuilder.Append(units[tenPlusOneIndex]);
+            // }
+            // else if (ten == 0)
+            // {
+            //     stringBuilder.Append(units[onesIndex]);
+            // }
+            // else
+            // {
+            //     stringBuilder.Append(tens[tenIndex]);
+            //     stringBuilder.Append(units[onesIndex]);
+            // }
+            // if(magnitudeCount > 0){
+            //     stringBuilder.Append(magnitude[magnitudeCount]);
+            // }
+            // return stringBuilder;
         }
 
         public long GetAmountOfLetters()
@@ -122,12 +145,20 @@ namespace MyApp
         public static long SumLetters(NumericalExpression NumEx)
         {
             long sumOfLetters = 0;
-            for (long i = 1; i <= NumEx.GetValue(); i++)
+            long n = NumEx.GetValue();
+            for (long i = 1; i <= n; i++)
             {
-                sumOfLetters += NumEx.GetAmountOfLetters();
+                NumericalExpression temp = new NumericalExpression(i, NumEx.GetLanguage());
+                sumOfLetters += temp.GetAmountOfLetters();
             }
             return sumOfLetters;
         }
+
+        private IWords GetLanguage()
+        {
+            return language;
+        }
+
         public override string ToString()
         {
             return GetSentence();
