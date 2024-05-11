@@ -7,8 +7,6 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hellorld!");
-
             NumericalExpression NumEx = new NumericalExpression(53211857887609);
             Console.WriteLine(NumEx);
 
