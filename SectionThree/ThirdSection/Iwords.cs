@@ -1,7 +1,5 @@
 namespace MyApp {
     interface IWords {
-        public string[] getUnits();
-        public string[] getTens();
-        public string[] getMagnitudes();
+        public string ToWords(long n);
     }
 }
