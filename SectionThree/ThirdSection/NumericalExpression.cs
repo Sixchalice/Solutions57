@@ -139,7 +139,7 @@ namespace MyApp
             return sumOfLetters;
         }
         /*
-        This is overloading. Overloading is when you have 2 methods with the same name but different parameters.
+        This is overloading. Overloading is when you have 2 methods with the same name / return the same result, but have different parameters.
         Ex: long n for the first method, and for the second a NumericalExpression object.
         */
         public static long SumLetters(NumericalExpression NumEx)
