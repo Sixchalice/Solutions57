@@ -19,9 +19,9 @@ namespace FourthSection
 				// int val = new Random().Next(0,2) == 0 ? 2 : 4;
 				int row = 0;
 				int col = 0;
-				Data.SetValue(2, row + 1, col);
-				Data.SetValue(2, row+1, col+1);
-				Data.SetValue(4, row+1, col+ 2);
+				Data.SetValue(2, row + 2, col+1);
+				Data.SetValue(2, row+2, col+1);
+				Data.SetValue(4, row, col+ 1);
 			}
 			return Data;
 		}
@@ -90,11 +90,37 @@ namespace FourthSection
 		}
 		private void MoveUp()
 		{
-
+			for(int row = 0; row < 4; row++) {
+				for(int col = 0; col < 4; col++) {
+					int firstIndex = -1;
+					for(int k = 3; k >= 0; k--) {
+						if(Data[k,col] == 0) {
+							firstIndex = k;
+						}
+					}
+					if(firstIndex != -1) {
+						Data[firstIndex, col] = Data[row,col];
+						Data[row,col] = 0;
+					}
+				}
+			}
 		}
 		private void MoveDown()
 		{
-
+			for(int row = 3; row >= 0; row--) {
+				for(int col = 0; col < 4; col++) {
+					int lastIndex = -1;
+					for(int k = 0; k < 4; k++) {
+						if(Data[k,col] == 0) {
+							lastIndex = k;
+						}
+					}
+					if(lastIndex != -1) {
+						Data[lastIndex, col] = Data[row, col];
+						Data[row,col] = 0;
+					}
+				}
+			}
 		}
 		private void GenerateNumberAfterTurn()
 		{
