@@ -54,7 +54,7 @@ namespace FourthSection
 					MergeDown();
 					break;
 			}
-			// GenerateNumberAfterTurn();
+			GenerateNumberAfterTurn();
 		}
 
 		private void MergeRight() {
