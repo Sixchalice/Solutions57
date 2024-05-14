@@ -12,18 +12,19 @@ namespace FourthSection
 			// Make 2 tiles 2 or 4 for the beginning of the game.
 			for (int i = 0; i < 2; i++)
 			{
-				// int row = new Random().Next(0, 4);
-				// int col = new Random().Next(0, 4);
-				// int val = new Random().Next(0,2) == 0 ? 2 : 4;
-				int row = 0;
-				int col = 0;
-				Data.SetValue(2, row, col+2);
-				Data.SetValue(2, row+1, col+2);
-				Data.SetValue(4, row + 3, col+ 2);
+				int row = new Random().Next(0, 4);
+				int col = new Random().Next(0, 4);
+				int val = new Random().Next(0,2) == 0 ? 2 : 4;
 
-				Data.SetValue(2, row, col);
-				Data.SetValue(2, row, col + 1);
-				Data.SetValue(4, row, col + 3);
+				Data.SetValue(val,row,col);
+
+				// Data.SetValue(2, row, col+2);
+				// Data.SetValue(2, row+1, col+2);
+				// Data.SetValue(4, row + 3, col+ 2);
+
+				// Data.SetValue(2, row, col);
+				// Data.SetValue(2, row, col + 1);
+				// Data.SetValue(4, row, col + 3);
 			}
 			return Data;
 		}
@@ -33,7 +34,6 @@ namespace FourthSection
 			// If there is a tile with the same value, merge them.
 			// Generate a 2 or a 4 in a random available tile. 
 
-			// TODO: MergeRight() and MergeLeft() work %100.
 			switch (direction)
 			{
 				case Direction.Right:
