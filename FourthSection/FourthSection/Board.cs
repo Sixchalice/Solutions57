@@ -52,40 +52,20 @@ namespace FourthSection
 			// GenerateNumberAfterTurn();
 		}
 
-		private void MergeRight() {
-			MoveRight();
-
-			for(int row = 0; row < 4; row++) {
-				for(int col = 0; col < 3; col++) {
-					if(Data[row,col] != 0) {
-						int nextCol = col + 1;
-						if(Data[row, col] == Data[row,nextCol]) {
-							Data[row,nextCol] = Data[row,nextCol] * 2;
-							Data[row,col] = 0;
-						}
-					}
-				}
-			}
-			// for(int i = 0; i < 4; i++) {
-			// 	for(int j = 3; j > 0; j--) {
-			// 		if(Data[i,j] != 0) {
-			// 			int k = j - 1; // The next column (right to left)
-			// 			if(Data[i,j] == Data[i,k]) {
-			// 				Data[i,j] = Data[i,k] * 2;
-			// 				Data[i,k] = 0;
-			// 			}
-			// 		}
-			// 	}
-			// }
-			MoveRight();
-		}
-
 		private void MoveRight() {
 			for(int row = 0; row < 4; row++) {
+				int lastIndex = -1;
 				for(int col = 2; col >= 0; col--) {
-					if(Data[row,col + 1] == 0) {
-						Data[row,col + 1] = Data[row,col];
-						Data[row,col] = 0;
+					for(int k = 0; k < 4; k++) {
+						if(Data[row,k] == 0) {
+							lastIndex = k;
+						}
+					}
+					if(lastIndex != -1) {
+						if(Data[row,col] != 0) {
+							Data[row, lastIndex] = Data[row, col];
+							Data[row,col] = 0;
+						}
 					}
 				}
 			}
@@ -94,52 +74,22 @@ namespace FourthSection
 		private void MoveLeft()
 		{
 			for(int row = 0; row < 4; row++) {
+				int firstIndex = -1;
 				for(int col = 1; col < 4; col++) {
-					if(Data[row, col - 1] == 0) {
-						Data[row, col - 1] = Data[row,col];
+					for(int k = 3; k >= 0; k--) {
+						if(Data[row,k] == 0) {
+							firstIndex = k;
+						}
+					}
+					if(firstIndex != -1) {
+						Data[row, firstIndex] = Data[row,col];
 						Data[row,col] = 0;
 					}
 				}
 			}
 		}
-
-		// private void MergeLeft() {
-		// 	MoveLeft();
-		// 	for(int i = 0; i < 4; i++) {
-		// 		for(int j = 0; j < 3; j++) {
-		// 			if(Data[i,j] != 0) {
-		// 				int k = j + 1; // The next column (left to right)
-		// 				if(Data[i,j] == Data[i,k]) {
-		// 					Data[i,j] = Data[i,k] * 2;
-		// 					Data[i,k] = 0;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// 	MoveLeft();
-		// }
-
-		private void MergeUp() {
-			MoveUp();
-			for(int i = 0; i < 3; i++) {
-				for(int j = 0; j < 4; j++) {
-					if(Data[i,j] != 0) {
-						int k = i + 1;
-						if(Data[i,j] == Data[k,j]) {
-							Data[i,j] = Data[k,j] * 2;
-							Data[k,j] = 0;
-						}
-					}
-				}
-			}
-			MoveUp();
-		}
 		private void MoveUp()
 		{
-			
-		}
-
-		private void MergeDown() {
 
 		}
 		private void MoveDown()
