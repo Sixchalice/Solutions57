@@ -19,9 +19,13 @@ namespace FourthSection
 				// int val = new Random().Next(0,2) == 0 ? 2 : 4;
 				int row = 0;
 				int col = 0;
-				Data.SetValue(2, row + 2, col+1);
-				Data.SetValue(2, row+2, col+1);
-				Data.SetValue(4, row, col+ 1);
+				Data.SetValue(2, row, col+2);
+				Data.SetValue(2, row+1, col+2);
+				Data.SetValue(4, row + 3, col+ 2);
+
+				Data.SetValue(2, row, col);
+				Data.SetValue(2, row, col + 1);
+				Data.SetValue(4, row, col + 3);
 			}
 			return Data;
 		}
@@ -31,31 +35,47 @@ namespace FourthSection
 			// If there is a tile with the same value, merge them.
 			// Generate a 2 or a 4 in a random available tile. 
 
+			// TODO: MergeRight() and MergeLeft() work %100.
 			switch (direction)
 			{
 				case Direction.Right:
-					MoveRight();
+					MergeRight();
 					break;
 
 				case Direction.Left:
-					MoveLeft();
+					MergeLeft();
 					break;
 
 				case Direction.Up:
-					MoveUp();
+					MergeUp();
 					break;
 
 				case Direction.Down:
-					MoveDown();
+					MergeDown();
 					break;
 			}
 			// GenerateNumberAfterTurn();
 		}
 
+		private void MergeRight() {
+			MoveRight();
+
+			for(int row = 0; row < 4; row++) {
+				for(int col = 3; col > 0; col--) {
+					int nextCol = col - 1; // Next column from right to left
+					if(Data[row, col] == Data[row, nextCol]) {
+						Data[row,col] = Data[row, col] * 2;
+						Data[row,nextCol] = 0;
+					}
+				}
+			}
+
+			MoveRight();
+		}
 		private void MoveRight() {
 			for(int row = 0; row < 4; row++) {
 				int lastIndex = -1;
-				for(int col = 2; col >= 0; col--) {
+				for(int col = 3; col >= 0; col--) {
 					for(int k = 0; k < 4; k++) {
 						if(Data[row,k] == 0) {
 							lastIndex = k;
@@ -71,6 +91,21 @@ namespace FourthSection
 			}
 		}
 
+		private void MergeLeft() {
+			MoveLeft();
+
+			for(int row = 0; row < 4; row++) {
+				for(int col = 0; col < 3; col++) {
+					int nextCol = col + 1; // Next column from left to right
+					if(Data[row,col] == Data[row,nextCol]) {
+						Data[row,col] = Data[row,col] * 2;
+						Data[row,nextCol] = 0;
+					}
+				}
+			}
+
+			MoveLeft();
+		}
 		private void MoveLeft()
 		{
 			for(int row = 0; row < 4; row++) {
@@ -88,22 +123,55 @@ namespace FourthSection
 				}
 			}
 		}
+
+		private void MergeUp() {
+			MoveUp();
+			for(int row = 0; row < 3; row++) {
+				for(int col = 0; col < 4; col++) {
+					int nextRow = row + 1; // Next from top to bottom
+					if(Data[row,col] == Data[nextRow, col]) {
+						Data[row,col] = Data[row,col] * 2;
+						Data[nextRow,col] = 0;
+					}
+				}
+			}
+			MoveUp();
+		}
+
 		private void MoveUp()
 		{
+
 			for(int row = 0; row < 4; row++) {
+				int firstIndex = -1;
 				for(int col = 0; col < 4; col++) {
-					int firstIndex = -1;
 					for(int k = 3; k >= 0; k--) {
 						if(Data[k,col] == 0) {
 							firstIndex = k;
 						}
 					}
-					if(firstIndex != -1) {
-						Data[firstIndex, col] = Data[row,col];
-						Data[row,col] = 0;
+					if(firstIndex > -1) {
+						if(row > firstIndex) {
+							Data[firstIndex, col] = Data[row, col];
+							Data[row,col] = 0;
+						}
 					}
 				}
 			}
+		}
+
+		private void MergeDown() 
+		{
+			MoveDown();
+			for(int row = 3; row > 0; row--) {
+				for(int col = 0; col < 4; col++) {
+					int nextRow = row - 1; // Next from bottom to top
+					if(Data[row, col] == Data[nextRow, col]) {
+						Data[row,col] = Data[row,col] * 2;
+						Data[nextRow, col] = 0;
+					}
+				}
+			}
+			MoveDown();
 		}
 		private void MoveDown()
 		{
@@ -116,8 +184,11 @@ namespace FourthSection
 						}
 					}
 					if(lastIndex != -1) {
-						Data[lastIndex, col] = Data[row, col];
-						Data[row,col] = 0;
+						if(row < lastIndex) {
+							Data[lastIndex, col] = Data[row, col];
+							Data[row,col] = 0;
+						}
+
 					}
 				}
 			}
