@@ -4,11 +4,9 @@ namespace FourthSection
 	public class Board
 	{
 		public int[,] Data { get; protected set; } = new int[4, 4];
-
-		public Board()
-		{
-		}
-
+		public int points {get; private set; } = 0;
+		public Board() {}
+		
 		public int[,] StartGame()
 		{
 			// Make 2 tiles 2 or 4 for the beginning of the game.
@@ -66,6 +64,7 @@ namespace FourthSection
 					if(Data[row, col] == Data[row, nextCol]) {
 						Data[row,col] = Data[row, col] * 2;
 						Data[row,nextCol] = 0;
+						AddPoints(Data[row,col]);
 					}
 				}
 			}
@@ -100,6 +99,7 @@ namespace FourthSection
 					if(Data[row,col] == Data[row,nextCol]) {
 						Data[row,col] = Data[row,col] * 2;
 						Data[row,nextCol] = 0;
+						AddPoints(Data[row,col]);
 					}
 				}
 			}
@@ -132,12 +132,12 @@ namespace FourthSection
 					if(Data[row,col] == Data[nextRow, col]) {
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow,col] = 0;
+						AddPoints(Data[row,col]);
 					}
 				}
 			}
 			MoveUp();
 		}
-
 		private void MoveUp()
 		{
 
@@ -168,6 +168,7 @@ namespace FourthSection
 					if(Data[row, col] == Data[nextRow, col]) {
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow, col] = 0;
+						AddPoints(Data[row,col]);
 					}
 				}
 			}
@@ -192,6 +193,10 @@ namespace FourthSection
 					}
 				}
 			}
+		}
+		
+		private void AddPoints(int n) {
+			this.points += n;
 		}
 		private void GenerateNumberAfterTurn()
 		{

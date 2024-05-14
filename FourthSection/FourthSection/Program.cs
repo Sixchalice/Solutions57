@@ -6,36 +6,26 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            Board board = new Board();
-            board.StartGame();
-            System.Console.WriteLine("Initial Board: ");
-            
-            Print(board.Data);
 
-            System.Console.WriteLine("After moving Down: ");
-            board.Move(Direction.Down);
-
-            Print(board.Data);
-
-            System.Console.WriteLine("After moving Up: ");
-            board.Move(Direction.Up);
-
-            Print(board.Data);
-
-            System.Console.WriteLine("After moving Up: ");
-            board.Move(Direction.Up);
-
-            Print(board.Data);
+            ConsoleGame cg = new ConsoleGame();
+            cg.StartGame();
         }
 
-        public static void Print(int[,] arr) {
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    System.Console.Write(arr[i, j] + " ");
+        public static void Print(int[,] board) {
+            for(int row = 0; row < 4; row++) {
+                for(int col = 0; col < 4; col++) {
+                    int val = board[row, col];
+                    if(val < 10)
+                        System.Console.Write(val + "    | ");
+                    else if(val < 100) 
+                        System.Console.Write(val + "   | ");
+                    else if (val < 1000)
+                        System.Console.Write(val + "  | ");
+                    else {
+                        System.Console.Write(val + " | ");
+                    }
                 }
-                System.Console.WriteLine();
+                System.Console.WriteLine("\n_________________________________");
             }
         }
     }
