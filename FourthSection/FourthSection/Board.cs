@@ -19,9 +19,9 @@ namespace FourthSection
 				// int val = new Random().Next(0,2) == 0 ? 2 : 4;
 				int row = 0;
 				int col = 0;
-				Data.SetValue(4, row, col);
 				Data.SetValue(2, row + 1, col);
-				Data.SetValue(2, row + 3, col);
+				Data.SetValue(2, row+1, col+1);
+				Data.SetValue(4, row+1, col+ 2);
 			}
 			return Data;
 		}
@@ -34,11 +34,11 @@ namespace FourthSection
 			switch (direction)
 			{
 				case Direction.Right:
-					MergeRight();
+					MoveRight();
 					break;
 
 				case Direction.Left:
-					MergeLeft();
+					MoveLeft();
 					break;
 
 				case Direction.Up:
@@ -54,75 +54,70 @@ namespace FourthSection
 
 		private void MergeRight() {
 			MoveRight();
-			for(int i = 0; i < 4; i++) {
-				for(int j = 3; j > 0; j--) {
-					if(Data[i,j] != 0) {
-						int k = j - 1; // The next column (right to left)
-						if(Data[i,j] == Data[i,k]) {
-							Data[i,j] = Data[i,k] * 2;
-							Data[i,k] = 0;
+
+			for(int row = 0; row < 4; row++) {
+				for(int col = 0; col < 3; col++) {
+					if(Data[row,col] != 0) {
+						int nextCol = col + 1;
+						if(Data[row, col] == Data[row,nextCol]) {
+							Data[row,nextCol] = Data[row,nextCol] * 2;
+							Data[row,col] = 0;
 						}
 					}
 				}
 			}
+			// for(int i = 0; i < 4; i++) {
+			// 	for(int j = 3; j > 0; j--) {
+			// 		if(Data[i,j] != 0) {
+			// 			int k = j - 1; // The next column (right to left)
+			// 			if(Data[i,j] == Data[i,k]) {
+			// 				Data[i,j] = Data[i,k] * 2;
+			// 				Data[i,k] = 0;
+			// 			}
+			// 		}
+			// 	}
+			// }
 			MoveRight();
 		}
-		private void MoveRight()
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					if (Data[i, j] != 0)
-					{
-						for (int k = j + 1; k < 4; k++)
-						{
-							if (Data[i, k] == 0)
-							{
-								Data[i, k] = Data[i, j];
-								Data[i, j] = 0;
-							}
-						}
+
+		private void MoveRight() {
+			for(int row = 0; row < 4; row++) {
+				for(int col = 2; col >= 0; col--) {
+					if(Data[row,col + 1] == 0) {
+						Data[row,col + 1] = Data[row,col];
+						Data[row,col] = 0;
 					}
 				}
 			}
 		}
 
-		private void MergeLeft() {
-			MoveLeft();
-			for(int i = 0; i < 4; i++) {
-				for(int j = 0; j < 3; j++) {
-					if(Data[i,j] != 0) {
-						int k = j + 1; // The next column (left to right)
-						if(Data[i,j] == Data[i,k]) {
-							Data[i,j] = Data[i,k] * 2;
-							Data[i,k] = 0;
-						}
-					}
-				}
-			}
-			MoveLeft();
-		}
 		private void MoveLeft()
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					if (Data[i, j] != 0)
-					{
-						for (int k = 3 - j; k < 4; k++)
-						{
-							if (Data[i, k] == 0)
-							{
-								Data[i, k] = Data[i, j];
-								Data[i, j] = 0;
-							}
-						}
+			for(int row = 0; row < 4; row++) {
+				for(int col = 1; col < 4; col++) {
+					if(Data[row, col - 1] == 0) {
+						Data[row, col - 1] = Data[row,col];
+						Data[row,col] = 0;
 					}
 				}
 			}
 		}
+
+		// private void MergeLeft() {
+		// 	MoveLeft();
+		// 	for(int i = 0; i < 4; i++) {
+		// 		for(int j = 0; j < 3; j++) {
+		// 			if(Data[i,j] != 0) {
+		// 				int k = j + 1; // The next column (left to right)
+		// 				if(Data[i,j] == Data[i,k]) {
+		// 					Data[i,j] = Data[i,k] * 2;
+		// 					Data[i,k] = 0;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	MoveLeft();
+		// }
 
 		private void MergeUp() {
 			MoveUp();
@@ -141,23 +136,7 @@ namespace FourthSection
 		}
 		private void MoveUp()
 		{
-			for (int i = 3; i > 0; i--)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					if (Data[i, j] != 0)
-					{
-						for (int k = i - 1; k < 4; k++)
-						{
-							if (Data[k, j] == 0)
-							{
-								Data[k, j] = Data[i, j];
-								Data[i, j] = 0;
-							}
-						}
-					}
-				}
-			}
+			
 		}
 
 		private void MergeDown() {
@@ -165,21 +144,7 @@ namespace FourthSection
 		}
 		private void MoveDown()
 		{
-			for (int i = 0; i < 3; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					if (Data[i, j] != 0)
-					{
-						int k = i + 1;
-						if (Data[k, j] == 0)
-						{
-							Data[k, j] = Data[i, j];
-							Data[i, j] = 0;
-						}
-					}
-				}
-			}
+
 		}
 		private void GenerateNumberAfterTurn()
 		{
