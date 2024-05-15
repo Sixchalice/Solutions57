@@ -10,13 +10,24 @@ class ConsoleGame
     public void StartGame() {
         ConsoleKey key = Console.ReadKey().Key;
         while(true) {
-
+            System.Console.WriteLine("Game Status: " + game.status);
+            System.Console.WriteLine("Points: " + game.points);
             if(game.status != GameStatus.Idle) {
                 break;
             }
             DoMove(key);
             Console.ReadKey(false);
         }
+        
+        // game.PrintBoard();
+        // game.Move(Direction.Down);
+        // game.PrintBoard();
+        // game.Move(Direction.Left);
+        // game.PrintBoard();
+        // game.Move(Direction.Right);
+        // game.PrintBoard();
+        // game.Move(Direction.Up);
+        // game.PrintBoard();
     }
     private void DoMove(ConsoleKey key) 
     {
@@ -32,6 +43,7 @@ class ConsoleGame
 
             case ConsoleKey.S:
                 game.board.Move(Direction.Down);
+                System.Console.WriteLine("MOVED DOWN");
                 break;
                 
             case ConsoleKey.D:

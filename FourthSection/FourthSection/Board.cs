@@ -5,6 +5,10 @@ namespace FourthSection
 	{
 		public int[,] Data { get; protected set; } = new int[4, 4];
 		public int points {get; private set; } = 0;
+
+		public Board(int[,] arr) {
+			this.Data = arr;
+		}
 		public Board() {}
 		
 		public int[,] StartGame()
@@ -12,19 +16,43 @@ namespace FourthSection
 			// Make 2 tiles 2 or 4 for the beginning of the game.
 			for (int i = 0; i < 2; i++)
 			{
-				int row = new Random().Next(0, 4);
-				int col = new Random().Next(0, 4);
-				int val = new Random().Next(0,2) == 0 ? 2 : 4;
+				// int row = new Random().Next(0, 4);
+				// int col = new Random().Next(0, 4);
+				// int val = new Random().Next(0,2) == 0 ? 2 : 4;
 
-				Data.SetValue(val,row,col);
+				// Data.SetValue(val,row,col);
 
-				// Data.SetValue(2, row, col+2);
-				// Data.SetValue(2, row+1, col+2);
-				// Data.SetValue(4, row + 3, col+ 2);
 
-				// Data.SetValue(2, row, col);
-				// Data.SetValue(2, row, col + 1);
-				// Data.SetValue(4, row, col + 3);
+				// Data.SetValue(2, 0, 0);
+				// Data.SetValue(4, 1, 0);
+
+				// Data.SetValue(4, 0, 1);
+				// Data.SetValue(2, 1, 1);
+				// Data.SetValue(4, 2, 1);
+				// Data.SetValue(16,3, 1);
+
+				// Data.SetValue(8,0, 2);
+				// Data.SetValue(4,1, 2);
+				// Data.SetValue(8,2, 2);
+				// Data.SetValue(2,3, 2);
+
+				// Data.SetValue(2,3, 3);
+				// Data.SetValue(8,3, 3);
+				// Data.SetValue(2,3, 3);
+				// Data.SetValue(4,3, 3);
+
+
+				Data.SetValue(2,3,0);
+				Data.SetValue(2,2,0);
+				Data.SetValue(4,1,0);
+				Data.SetValue(2,0,0);
+
+
+				// Data.SetValue(2,0,1);
+				// Data.SetValue(2,1,1);
+				// Data.SetValue(2,2,1);
+				// Data.SetValue(4,3,1);
+
 			}
 			return Data;
 		}
@@ -37,27 +65,42 @@ namespace FourthSection
 			switch (direction)
 			{
 				case Direction.Right:
+					// doesnt work.
+					// test case:
+						// Data.SetValue(2,0,3);
+						// Data.SetValue(2,0,2);
+						// Data.SetValue(4,0,1);
+						// Data.SetValue(2,0,0);
 					MergeRight();
 					break;
 
 				case Direction.Left:
+					//Everything seems to work.
 					MergeLeft();
 					break;
 
 				case Direction.Up:
+					// Does not work.
+					// Test case: 
+						// Data.SetValue(2,0,2);
+						// Data.SetValue(2,1,2);
+						// Data.SetValue(4,2,2);
+						// Data.SetValue(2,3,2);
 					MergeUp();
+					// MoveUp();
 					break;
 
 				case Direction.Down:
+					//Everything seems to work.
 					MergeDown();
+					// MoveDown();
 					break;
 			}
-			GenerateNumberAfterTurn();
 		}
 
 		private void MergeRight() {
 			MoveRight();
-
+			bool happened = false;
 			for(int row = 0; row < 4; row++) {
 				for(int col = 3; col > 0; col--) {
 					int nextCol = col - 1; // Next column from right to left
@@ -65,11 +108,13 @@ namespace FourthSection
 						Data[row,col] = Data[row, col] * 2;
 						Data[row,nextCol] = 0;
 						AddPoints(Data[row,col]);
+						happened = true;
 					}
 				}
 			}
-
 			MoveRight();
+			if(happened)
+				GenerateNumberAfterTurn();
 		}
 		private void MoveRight() {
 			for(int row = 0; row < 4; row++) {
@@ -80,7 +125,11 @@ namespace FourthSection
 							lastIndex = k;
 						}
 					}
+					if(lastIndex == 0) {
+						return;
+					}
 					if(lastIndex != -1) {
+						System.Console.WriteLine("Changed: (" + row + ", " + col +") with (" + row + ", " + lastIndex + ")" );
 						if(Data[row,col] != 0) {
 							Data[row, lastIndex] = Data[row, col];
 							Data[row,col] = 0;
@@ -92,7 +141,7 @@ namespace FourthSection
 
 		private void MergeLeft() {
 			MoveLeft();
-
+			bool happened = false;
 			for(int row = 0; row < 4; row++) {
 				for(int col = 0; col < 3; col++) {
 					int nextCol = col + 1; // Next column from left to right
@@ -100,10 +149,12 @@ namespace FourthSection
 						Data[row,col] = Data[row,col] * 2;
 						Data[row,nextCol] = 0;
 						AddPoints(Data[row,col]);
+						happened = true;
 					}
 				}
 			}
-
+			if(happened)
+				GenerateNumberAfterTurn();
 			MoveLeft();
 		}
 		private void MoveLeft()
@@ -126,16 +177,21 @@ namespace FourthSection
 
 		private void MergeUp() {
 			MoveUp();
+			bool happened = false;
 			for(int row = 0; row < 3; row++) {
 				for(int col = 0; col < 4; col++) {
 					int nextRow = row + 1; // Next from top to bottom
 					if(Data[row,col] == Data[nextRow, col]) {
+						System.Console.WriteLine("ON: (" + row + ", " + col +")");
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow,col] = 0;
 						AddPoints(Data[row,col]);
+						happened = true;
 					}
 				}
 			}
+			if(happened)
+				GenerateNumberAfterTurn();
 			MoveUp();
 		}
 		private void MoveUp()
@@ -148,6 +204,9 @@ namespace FourthSection
 						if(Data[k,col] == 0) {
 							firstIndex = k;
 						}
+					}
+					if(firstIndex == 3) {
+						return;
 					}
 					if(firstIndex > -1) {
 						if(row > firstIndex) {
@@ -162,6 +221,7 @@ namespace FourthSection
 		private void MergeDown() 
 		{
 			MoveDown();
+			bool happened = false;
 			for(int row = 3; row > 0; row--) {
 				for(int col = 0; col < 4; col++) {
 					int nextRow = row - 1; // Next from bottom to top
@@ -169,9 +229,12 @@ namespace FourthSection
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow, col] = 0;
 						AddPoints(Data[row,col]);
+						happened = true;
 					}
 				}
 			}
+			if(happened)
+				GenerateNumberAfterTurn();
 			MoveDown();
 		}
 		private void MoveDown()
