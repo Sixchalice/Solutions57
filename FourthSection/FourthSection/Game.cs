@@ -14,65 +14,47 @@ class Game
     }
 
     public void Move(Direction direction) {
-        if(status == GameStatus.Lose) {
-            return;
-        }
-        board.Move(direction);
-        // if(prevBoardData == board.Data) {
-
-        // }
         if(status != GameStatus.Idle) {
             return;
         }
-        // CheckWin();
-        // CheckLose();
+
+        points += board.Move(direction);
+
+
+        CheckWin();
+        // bool lost = board.CheckLose();
+        // if(lost) {
+        //     status = GameStatus.Lose;
+        // }
     }
 
-    private void CheckWin() {                
-        if(this.points == board.points - 2048) {
-            points = board.points;
-            this.status = GameStatus.Win;
-        }
-    }
-    private void CheckLose() {
-        // Copy all the current moves to a new temporary board.
-        int[,] prevBoardData = new int[4,4];
-        prevBoardData = board.Data;
-        Board tempBoard = new Board(prevBoardData);
-        
-        // Call upon all 4 directions, then check if the temp board is different.
-        // If it isn't, the player lost.
-        foreach (Direction dir in Enum.GetValues<Direction>())
-        {
-            tempBoard.Move(dir);
-        }
-        if(tempBoard.Data == board.Data) {
-            this.status = GameStatus.Lose;
+    private void CheckWin() { 
+        // Go over the board, check if there is a tile with the number 2048. If so, the player won.               
+        for(int row = 0; row < 4; row++) {
+            for(int col = 0; col < 4; col++) {
+                int val = this.board.Data[row,col];
+                if(val == 2048)
+                    this.status = GameStatus.Win;
+            }
         }
     }
 
     public void PrintBoard() {
         Console.Clear();
-        for(int i = 0; i < 4; i++) {
-            for(int j = 0; j < 4; j++) {
-                System.Console.Write(board.Data[i,j] + " ");
+            for(int row = 0; row < 4; row++) {
+                for(int col = 0; col < 4; col++) {
+                    int val = this.board.Data[row, col];
+                    if(val < 10)
+                        System.Console.Write(val + "    | ");
+                    else if(val < 100) 
+                        System.Console.Write(val + "   | ");
+                    else if (val < 1000)
+                        System.Console.Write(val + "  | ");
+                    else {
+                        System.Console.Write(val + " | ");
+                    }
+                }
+                System.Console.WriteLine("\n_________________________________");
             }
-            System.Console.WriteLine();
-
-        // for(int row = 0; row < 4; row++) {
-        //     for(int col = 0; col < 4; col++) {
-        //         int val = this.board.Data[row, col];
-        //         if(val < 10)
-        //             System.Console.Write(val + "    | ");
-        //         else if(val < 100) 
-        //             System.Console.Write(val + "   | ");
-        //         else if (val < 1000)
-        //             System.Console.Write(val + "  | ");
-        //         else {
-        //             System.Console.Write(val + " | ");
-        //         }
-        //     }
-        //     System.Console.WriteLine("\n____________________________");
-        }
     }
 }
