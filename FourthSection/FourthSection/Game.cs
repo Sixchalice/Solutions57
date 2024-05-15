@@ -44,8 +44,14 @@ class Game
             for(int row = 0; row < 4; row++) {
                 for(int col = 0; col < 4; col++) {
                     int val = this.board.Data[row, col];
-                    if(val < 10)
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    if(val < 10) {
+                        if(val == 0) {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                        }
                         System.Console.Write(val + "    | ");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
                     else if(val < 100) 
                         System.Console.Write(val + "   | ");
                     else if (val < 1000)
