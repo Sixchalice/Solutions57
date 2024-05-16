@@ -34,18 +34,22 @@ namespace FourthSection
 			{
 				case Direction.Right:
 					currPoints = MergeRight();
+					System.Console.WriteLine("MOVED RIGHT");
 					break;
 
 				case Direction.Left:
 					currPoints = MergeLeft();
+					System.Console.WriteLine("MOVED LEFT");
 					break;
 
 				case Direction.Up:
 					currPoints = MergeUp();
+					System.Console.WriteLine("MOVED UP");
 					break;
 
 				case Direction.Down:
 					currPoints = MergeDown();
+					System.Console.WriteLine("MOVED DOWN");
 					break;
 			}
 			return currPoints;
@@ -86,7 +90,7 @@ namespace FourthSection
 						continue;
 					}
 					if(lastIndex != -1) {
-						if(lastIndex > row) {
+						if(lastIndex > col) {
 							if(Data[row,col] != 0) {
 								Data[row, lastIndex] = Data[row, col];
 								Data[row,col] = 0;
