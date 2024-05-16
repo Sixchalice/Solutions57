@@ -86,9 +86,11 @@ namespace FourthSection
 						continue;
 					}
 					if(lastIndex != -1) {
-						if(Data[row,col] != 0) {
-							Data[row, lastIndex] = Data[row, col];
-							Data[row,col] = 0;
+						if(lastIndex > row) {
+							if(Data[row,col] != 0) {
+								Data[row, lastIndex] = Data[row, col];
+								Data[row,col] = 0;
+							}
 						}
 					}
 				}
