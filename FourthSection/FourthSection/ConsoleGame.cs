@@ -44,10 +44,12 @@ class ConsoleGame
         if(game.status == GameStatus.Lose) {
             Console.Clear();
             System.Console.WriteLine("YOU LOSE!!!");
+            System.Console.WriteLine("Points: " + game.points);
         }
         else if(game.status == GameStatus.Win) {
             Console.Clear();
             System.Console.WriteLine("YOU WIN!!!!");
+            System.Console.WriteLine("Points: " + game.points);
         }
     }
 }
