@@ -22,10 +22,10 @@ class Game
 
 
         CheckWin();
-        // bool lost = board.CheckLose();
-        // if(lost) {
-        //     status = GameStatus.Lose;
-        // }
+        bool lost = board.CheckLose();
+        if(lost) {
+            status = GameStatus.Lose;
+        }
     }
 
     private void CheckWin() { 
@@ -40,25 +40,49 @@ class Game
     }
 
     public void PrintBoard() {
-        Console.Clear();
+        // Console.Clear();
+        System.Console.WriteLine();
             for(int row = 0; row < 4; row++) {
                 for(int col = 0; col < 4; col++) {
                     int val = this.board.Data[row, col];
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     if(val < 10) {
-                        if(val == 0) {
+                        if(val == 0) 
                             Console.ForegroundColor = ConsoleColor.Black;
-                        }
+                        else if(val == 2)
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                        else if(val == 4)
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        else if(val == 8)
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         System.Console.Write(val + "    | ");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
                     }
-                    else if(val < 100) 
+                    else if(val < 100) {
+                        if(val == 16)
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        else if(val == 32)
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        else if(val == 64)
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                         System.Console.Write(val + "   | ");
-                    else if (val < 1000)
+                    }
+                    else if (val < 1000) {
+                        if(val == 128)
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                        else if(val == 256)
+                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        else if(val == 512)
+                            Console.ForegroundColor = ConsoleColor.Red;
                         System.Console.Write(val + "  | ");
+                    }
                     else {
+                        if(val == 1024)
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                        if(val == 2048)
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                         System.Console.Write(val + " | ");
                     }
+                    Console.ForegroundColor = ConsoleColor.Black;
                 }
                 System.Console.WriteLine("\n_________________________________");
             }

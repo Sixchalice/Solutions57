@@ -8,13 +8,15 @@ class ConsoleGame
         game = new Game();
     }
     public void StartGame() {
-        ConsoleKey key = Console.ReadKey().Key;
+        ConsoleKeyInfo keyInfo;
         while(game.status == GameStatus.Idle) {
 
+            keyInfo = Console.ReadKey();
+            Console.Clear();
             System.Console.WriteLine("Game Status: " + game.status);
             System.Console.WriteLine("Points: " + game.points);
             System.Console.WriteLine();
-            switch (key)
+            switch (keyInfo.Key)
             {
                 case ConsoleKey.W:
                     game.Move(Direction.Up);
@@ -33,7 +35,7 @@ class ConsoleGame
                     break;
             }
             game.PrintBoard();
-            Console.ReadKey(false);
+            // Console.ReadKey(false);
         }
         if(game.status == GameStatus.Lose) {
             Console.Clear();

@@ -34,32 +34,32 @@ namespace FourthSection
 			{
 				case Direction.Right:
 					currPoints = MergeRight();
-					System.Console.WriteLine("MOVED RIGHT");
+					// System.Console.WriteLine("MOVED RIGHT");
 					break;
 
 				case Direction.Left:
 					currPoints = MergeLeft();
-					System.Console.WriteLine("MOVED LEFT");
+					// System.Console.WriteLine("MOVED LEFT");
 					break;
 
 				case Direction.Up:
 					currPoints = MergeUp();
-					System.Console.WriteLine("MOVED UP");
+					// System.Console.WriteLine("MOVED UP");
 					break;
 
 				case Direction.Down:
 					currPoints = MergeDown();
-					System.Console.WriteLine("MOVED DOWN");
+					// System.Console.WriteLine("MOVED DOWN");
 					break;
 			}
 			return currPoints;
 		}
 
 		private int MergeRight() {
-			MoveRight();
+			bool happened = MoveRight();
 			// In the game, if all the tiles are on the right side and the player moves to the right, nothing happens.
 			// this boolean variable makes sure nothing moved, to make sure that a new number isnt generated onto the board.
-			bool happened = false;
+
 			int points = 0;
 			for(int row = 0; row < 4; row++) {
 				for(int col = 3; col > 0; col--) {
@@ -68,7 +68,6 @@ namespace FourthSection
 						Data[row,col] = Data[row, col] * 2;
 						Data[row,nextCol] = 0;
 						points = Data[row,col];
-						happened = true;
 					}
 				}
 			}
@@ -77,7 +76,8 @@ namespace FourthSection
 				GenerateNumberAfterTurn();
 			return points;
 		}
-		private void MoveRight() {
+		private bool MoveRight() {
+			bool moved = false;
 			for(int row = 0; row < 4; row++) {
 				int lastIndex = -1;
 				for(int col = 3; col >= 0; col--) {
@@ -94,16 +94,17 @@ namespace FourthSection
 							if(Data[row,col] != 0) {
 								Data[row, lastIndex] = Data[row, col];
 								Data[row,col] = 0;
+								moved = true;
 							}
 						}
 					}
 				}
 			}
+			return moved;
 		}
 
 		private int MergeLeft() {
-			MoveLeft();
-			bool happened = false;
+			bool happened = MoveLeft();
 			int points = 0;
 			for(int row = 0; row < 4; row++) {
 				for(int col = 0; col < 3; col++) {
@@ -112,7 +113,6 @@ namespace FourthSection
 						Data[row,col] = Data[row,col] * 2;
 						Data[row,nextCol] = 0;
 						points = Data[row,col];
-						happened = true;
 					}
 				}
 			}
@@ -121,8 +121,9 @@ namespace FourthSection
 			MoveLeft();
 			return points;
 		}
-		private void MoveLeft()
+		private bool MoveLeft()
 		{
+			bool moved = false;
 			for(int row = 0; row < 4; row++) {
 				int firstIndex = -1;
 				for(int col = 1; col < 4; col++) {
@@ -136,14 +137,15 @@ namespace FourthSection
 					if(firstIndex != -1) {
 						Data[row, firstIndex] = Data[row,col];
 						Data[row,col] = 0;
+						moved = true;
 					}
 				}
 			}
+			return moved;
 		}
 
 		private int MergeUp() {
-			MoveUp();
-			bool happened = false;
+			bool happened = MoveUp();
 			int points = 0;
 			for(int row = 0; row < 3; row++) {
 				for(int col = 0; col < 4; col++) {
@@ -152,7 +154,6 @@ namespace FourthSection
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow,col] = 0;
 						points = Data[row,col];
-						happened = true;
 					}
 				}
 			}
@@ -161,8 +162,9 @@ namespace FourthSection
 			MoveUp();
 			return points;
 		}
-		private void MoveUp()
+		private bool MoveUp()
 		{
+			bool moved = false;
 			for(int row = 0; row < 4; row++) {
 				for(int col = 0; col < 4; col++) {
 					int firstIndex = -1;
@@ -181,15 +183,16 @@ namespace FourthSection
 					if(firstIndex < row) {
 						Data[firstIndex, col] = Data[row, col];
 						Data[row,col] = 0;
+						moved = true;
 					}
 				}
 			}
+			return moved;
 		}
 
 		private int MergeDown() 
 		{
-			MoveDown();
-			bool happened = false;
+			bool happened = MoveDown();
 			int points = 0;
 			for(int row = 3; row > 0; row--) {
 				for(int col = 0; col < 4; col++) {
@@ -198,7 +201,6 @@ namespace FourthSection
 						Data[row,col] = Data[row,col] * 2;
 						Data[nextRow, col] = 0;
 						points = Data[row,col];
-						happened = true;
 					}
 				}
 			}
@@ -207,8 +209,9 @@ namespace FourthSection
 			MoveDown();
 			return points;
 		}
-		private void MoveDown()
+		private bool MoveDown()
 		{
+			bool moved = false;
 			for(int row = 3; row >= 0; row--) {
 				for(int col = 0; col < 4; col++) {
 					int lastIndex = -1;
@@ -224,13 +227,25 @@ namespace FourthSection
 						if(row < lastIndex) {
 							Data[lastIndex, col] = Data[row, col];
 							Data[row,col] = 0;
+							moved = true;
 						}
 
 					}
 				}
 			}
+			return moved;
 		}
-		
+		private int GetAmountOfEmptyCells() {
+			int count = 0;
+			for(int row = 0; row < 4; row++) {
+				for(int col = 0; col < 4; col++) {
+					if(Data[row,col] == 0) {
+						count++;
+					}
+				}
+			}
+			return count;
+		}
 		private void GenerateNumberAfterTurn()
 		{
 			Random rnd = new Random();
@@ -246,21 +261,24 @@ namespace FourthSection
 		}
 
 		public bool CheckLose() {
-       		// Copy all the current moves to a new temporary board.
-	        Board tempBoard = new Board();
-			tempBoard.Data = (int[,])this.Data.Clone();
+			// Make sure the board is filled
+			bool didLose = false;
+			if(this.GetAmountOfEmptyCells() == 0) {
+	       		// Copy all the current moves to a new temporary board.
+	    	    Board tempBoard = new Board();
+				tempBoard.Data = (int[,])this.Data.Clone();
         
-    	    // Call upon all 4 directions, then check if there are any points..
-    	    // If there isnt, there arent any more possible moves and the player lost.
-			int val = 0;
-        	foreach (Direction dir in Enum.GetValues<Direction>())
-        	{
-            	val += tempBoard.Move(dir);
-	        }
-    	    if(val == 0) {
-        	    return true;
-        	}
-			return false;
+    		    // Call upon all 4 directions, then check if the points changed.
+    	    	// If it didn't, there arent any more possible moves and the player lost.
+				int points = 0;
+    	    	foreach (Direction dir in Enum.GetValues<Direction>())
+        		{
+					points += tempBoard.Move(dir);
+	        	}
+				if(points == 0)
+					didLose = true;	
+			}
+			return didLose;
     	}
 	}
 }
