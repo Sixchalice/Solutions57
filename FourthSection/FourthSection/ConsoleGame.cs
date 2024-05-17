@@ -9,6 +9,7 @@ class ConsoleGame
     }
     public void StartGame() {
         ConsoleKeyInfo keyInfo;
+        System.Console.WriteLine("Welcome, Press they keys W A S and D in order to move.");
         while(game.status == GameStatus.Idle) {
 
             keyInfo = Console.ReadKey();
@@ -32,6 +33,10 @@ class ConsoleGame
                 
                 case ConsoleKey.D:
                     game.Move(Direction.Right);
+                    break;
+                
+                default:
+                    System.Console.WriteLine("Wrong input. W A S and D only!");
                     break;
             }
             game.PrintBoard();
