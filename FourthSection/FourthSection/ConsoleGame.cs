@@ -35,11 +35,14 @@ class ConsoleGame
                     break;
             }
             game.PrintBoard();
-            // Console.ReadKey(false);
         }
         if(game.status == GameStatus.Lose) {
             Console.Clear();
             System.Console.WriteLine("YOU LOSE!!!");
+        }
+        else if(game.status == GameStatus.Win) {
+            Console.Clear();
+            System.Console.WriteLine("YOU WIN!!!!");
         }
     }
 }
